@@ -3,15 +3,19 @@ function get_angle(point1, point2, point3 = false) {
     if (!point3) {
         let dy = point1.y - point2.y;
         let dx = point1.x - point2.x;
+
         angle = Math.atan2(dy, dx);
         angle = rad_to_deg(angle);
         if (angle < 0) {
             angle += 360;
         }
     } else {
-        let angle1 = get_angle(p1, p2);
-        let angle2 = get_angle(p2, p3);
-        angle = 180 + (angle2 - angle1);
+        let angle1 = get_angle(point1, point2);
+        let angle2 = get_angle(point2, point3);
+        angle = angle2 + 180 - angle1
+        if (angle == 360) {
+            return 0;
+        }
     }
     return angle;
 }
@@ -38,9 +42,9 @@ class Point {
         this.x = x
         this.y = y
     }
-    get_angle(prev1, prev2=false) {
+    get_angle(prev1, prev2 = false) {
         if (!prev2) {
-           return get_angle(prev1, this) 
+            return get_angle(prev1, this)
         } else {
             return get_angle(prev2, prev1, this)
         }
